@@ -53,7 +53,6 @@
               displayTodos(data);
             });
         }
-
         getTodos();
 
         const resetTodosInput = () => {
@@ -90,6 +89,25 @@
             // deleteTodo(todo, ids.listItemID, ids.deleteID);
           })
         }
+
+        form.submit((e) => {
+          e.preventDefault();
+          fetch('/', {
+            method: 'post',
+            body: JSON.stringify({todo: todoUserInput.val()}),
+            headers : {
+              "Content-Type": "application/json; charset=utf-8"
+            }
+          }).then(response => response.json())
+            .then((data) => {
+              if (data.result.ok == 1 && data.result.n == 1) {
+                let ids = buildIDs(data.document);
+                display.append(buildTemplate(data.document, ids));
+                // editTodo(data.document, ids.todoID, ids.editID);
+                // deleteTodo(todo, ids.listItemID, ids.deleteID);
+              }
+            });
+        });
       })
     </script>
   </body>
