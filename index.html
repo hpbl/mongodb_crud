@@ -59,11 +59,24 @@
           todoUserInput.val('');
         }
 
+        const deleteTodo = (todo, listItemID, deleteID) => {
+          let deleteBtn = $(`#${deleteID}`);
+          deleteBtn.click(() => {
+            fetch(`/${todo._id}`, {method: 'delete'})
+              .then(response => response.json())
+              .then((data) => {
+                if (data.ok == 1) {
+                  $(`#${listItemID}`).remove();
+                }
+              });
+          });
+        }
+
         const buildIDs = (todo) => {
           return {
             editID: "edit_" + todo._id,
             deleteID: "delete_" + todo._id,
-            listItemID: 'listItem_' + todo.id,
+            listItemID: 'listItem_' + todo._id,
             todoID: 'todo_' + todo._id
           }
         }
@@ -75,7 +88,7 @@
                       <div class="col-md-4" ></div>
                       <div class="col-md-4 text-right">
                         <button type="button" class="btn btn-secondary" id="${ids.editID}">Edit</button>
-                        <button type="button" class="btn btn-danger" id="${ids.deleteID}">Edit</button>
+                        <button type="button" class="btn btn-danger" id="${ids.deleteID}">Delete</button>
                       </div>
                     </div>
                   </li>`
@@ -86,7 +99,7 @@
             let ids = buildIDs(todo);
             display.append(buildTemplate(todo, ids));
             // editTodo(todo, ids.todoID, ids.editID);
-            // deleteTodo(todo, ids.listItemID, ids.deleteID);
+            deleteTodo(todo, ids.listItemID, ids.deleteID);
           })
         }
 
@@ -104,7 +117,7 @@
                 let ids = buildIDs(data.document);
                 display.append(buildTemplate(data.document, ids));
                 // editTodo(data.document, ids.todoID, ids.editID);
-                // deleteTodo(todo, ids.listItemID, ids.deleteID);
+                deleteTodo(data.document, ids.listItemID, ids.deleteID);
               }
             });
         });

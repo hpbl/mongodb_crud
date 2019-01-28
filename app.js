@@ -58,6 +58,7 @@ app.delete('/:id', (req, res) => {
     if (err) {
       console.log(err);
     } else {
+      console.log('deleted', result);
       res.json(result);
     }
   })
