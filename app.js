@@ -27,6 +27,8 @@ app.put('/:id', (req, res) => {
   const todoID = req.params.id;
   const userInput = req.body;
 
+  console.log('req.body', userInput);
+
   db.getDB().collection(collection).findOneAndUpdate(
     {_id: db.getPrimaryKey(todoID)},
     {$set: {todo: userInput.todo}},

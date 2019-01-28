@@ -59,6 +59,26 @@
           todoUserInput.val('');
         }
 
+        const editTodo = (todo, todoID, editID) => {
+          let editBtn = $(`#${editID}`);
+          editBtn.click(() => {
+            fetch(`/${todo._id}`, {
+              method: 'put',
+              body: JSON.stringify({todo: todoUserInput.val()}),
+              headers : {
+                "Content-Type": "application/json; charset=utf-8"
+              }
+            }).then(res => res.json())
+              .then((data) => {
+                console.log('data', data);
+                if (data.ok == 1 && data.lastErrorObject.n == 1) {
+                  const newValue = data.value.todo;
+                  $(`#${todoID}`).text(newValue);
+                }
+              })
+          });
+        }
+
         const deleteTodo = (todo, listItemID, deleteID) => {
           let deleteBtn = $(`#${deleteID}`);
           deleteBtn.click(() => {
@@ -98,7 +118,7 @@
           data.forEach((todo) => {
             let ids = buildIDs(todo);
             display.append(buildTemplate(todo, ids));
-            // editTodo(todo, ids.todoID, ids.editID);
+            editTodo(todo, ids.todoID, ids.editID);
             deleteTodo(todo, ids.listItemID, ids.deleteID);
           })
         }
@@ -116,7 +136,7 @@
               if (data.result.ok == 1 && data.result.n == 1) {
                 let ids = buildIDs(data.document);
                 display.append(buildTemplate(data.document, ids));
-                // editTodo(data.document, ids.todoID, ids.editID);
+                editTodo(data.document, ids.todoID, ids.editID);
                 deleteTodo(data.document, ids.listItemID, ids.deleteID);
               }
             });
