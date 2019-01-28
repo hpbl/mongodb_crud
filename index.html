@@ -74,6 +74,7 @@
                 if (data.ok == 1 && data.lastErrorObject.n == 1) {
                   const newValue = data.value.todo;
                   $(`#${todoID}`).text(newValue);
+                  resetTodosInput();
                 }
               })
           });
@@ -138,6 +139,7 @@
                 display.append(buildTemplate(data.document, ids));
                 editTodo(data.document, ids.todoID, ids.editID);
                 deleteTodo(data.document, ids.listItemID, ids.deleteID);
+                resetTodosInput();
               }
             });
         });
