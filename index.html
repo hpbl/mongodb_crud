@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Todo CRUD App</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+          <form id="form">
+            <div class="form-group">
+              <label for="todo">Todo</label>
+              <input type="text" class="form-control" id="todoUserInput" placeholder="Todo">
+              <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-2"></div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+          <ul class="list-group" id="display"></ul>
+        </div>
+        <div class="col-lg-2"></div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+      $(document).ready(() => {
+        const display = $('#display');
+        const form = $('#form');
+        const todoUserInput = $('#todoUserInput');
+
+        const resetTodosInput = () => {
+          todoUserInput.val('');
+        }
+
+        const buildIDs = (todo) => {
+          return {
+            editID: "edit_" + todo._id,
+            deleteID: "delete_" + todo._id,
+            listItemID: 'listItem_' + todo.id,
+            todoID: 'todo_' + todo._id
+          }
+        }
+
+        const buildTemplate = (todo, ids) => {
+          return `<li class="list-group-item" id="${ids.listItemID}">
+                    <div class="row">
+                      <div class="col-md-4" id="${ids.todoID}">${todo.todo}</div>
+                      <div class="col-md-4" ></div>
+                      <div class="col-md-4 text-right">
+                        <button type="button" class="btn btn-secondary" id="${ids.editID}">Edit</button>
+                        <button type="button" class="btn btn-danger" id="${ids.deleteID}">Edit</button>
+                      </div>
+                    </div>
+                  </li>`
+        }
+
+        const displayTodos = (data) => {
+          data.forEach((todo) => {
+            let ids = buildIDs(todo);
+            display.append(buildTemplate(todo, ids));
+            editTodo(todo, ids.todoID, ids.editID);
+            deleteTodo(todo, ids.listItemID, ids.deleteID);
+          })
+        }
+      })
+    </script>
+  </body>
+</html>
