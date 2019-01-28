@@ -21,8 +21,24 @@ app.get('/getTodos', (req, res) => {
       res.json(documents);
     }
   })
-})
+});
 
+app.put('/:id', (req, res) => {
+  const todoID = req.params.id;
+  const userInput = req.body;
+
+  db.getDB().collection(collection).findOneAndUpdate(
+    {_id: db.getPrimaryKey(todoID)},
+    {$set: {todo: userInput.todo}},
+    {returnOriginal: false},
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(result);
+      }
+  })
+});
 
 db.connect((err) => {
   if (err) {
@@ -34,4 +50,4 @@ db.connect((err) => {
       console.log('connected to dabase, app listening on port 3000');
     });
   }
-})
+});
